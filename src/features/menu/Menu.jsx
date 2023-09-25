@@ -15,7 +15,7 @@ function Menu() {
   );
 }
 
-//We call these functions loader only and create it in the file we want the data
+//We call these functions loader only and create it in the file we want the data. These loader uses renders as it fetchs data approach
 export async function loader() {
   const menu = await getMenu();
   return menu;
