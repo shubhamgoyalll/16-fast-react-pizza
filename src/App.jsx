@@ -9,10 +9,13 @@ import AppLayout from "./ui/AppLayout";
 
 import { loader as menuLoader } from "./features/menu/Menu";
 
+import Error from "./ui/Error";
+
 //New way of using React Router
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
@@ -22,6 +25,8 @@ const router = createBrowserRouter([
         path: "/menu",
         element: <Menu />,
         loader: menuLoader,
+        //Added errorElement here as if Menu api doesn't work it will show Error with other comp.
+        errorElement: <Error />,
       },
       {
         path: "/cart",
