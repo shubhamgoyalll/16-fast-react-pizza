@@ -9,6 +9,7 @@ import AppLayout from "./ui/AppLayout";
 
 import { loader as menuLoader } from "./features/menu/Menu";
 import { loader as orderLoader } from "./features/order/SearchOrder";
+import { action as createOrderAction } from "./features/order/CreateOrder";
 
 import Error from "./ui/Error";
 
@@ -36,6 +37,8 @@ const router = createBrowserRouter([
       {
         path: "/order/new",
         element: <CreateOrder />,
+        //To connect the action to the route
+        action: createOrderAction,
       },
       {
         path: "/order/:orderId",

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Form, redirect } from "react-router-dom";
+import { createOrder } from "../../services/apiRestaurant";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -38,7 +40,9 @@ function CreateOrder() {
     <div>
       <h2>Ready to order? Let's go!</h2>
 
-      <form>
+      {/* We can write the path in action to which the form will be submitted to and if it is empty it will submit to closest path */}
+      {/* <Form method="POST" action="/order/new"> */}
+      <Form method="POST" action="">
         <div>
           <label>First Name</label>
           <input type="text" name="customer" required />
@@ -70,11 +74,37 @@ function CreateOrder() {
         </div>
 
         <div>
+          Data which is outside the React router Form can be passed to action by
+          this way
+          <input type="hidden" name="cart" value={JSON.stringify(cart)} />
           <button>Order now</button>
         </div>
-      </form>
+      </Form>
     </div>
   );
+}
+
+//request we get as soon as the Form is submitted. It goes to this action function
+export async function action({ request }) {
+  //formData function we get from the browser
+  const formData = await request.formData();
+  //to convert data into object
+  const data = Object.fromEntries(formData);
+
+  // console.log(data);
+
+  const order = {
+    ...data,
+    cart: JSON.parse(data.cart),
+    priority: data.priority === "on",
+  };
+
+  // console.log(order);
+
+  const newOrder = await createOrder(order);
+
+  //Using redirect to make it to id path as we cant use useNavigate hook outside a comp
+  return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;
